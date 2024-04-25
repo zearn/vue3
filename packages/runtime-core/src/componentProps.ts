@@ -482,15 +482,12 @@ function resolvePropValue(
       }
     }
     // boolean casting
-    if (opt[BooleanFlags.shouldCast]) {
-      if (isAbsent && !hasDefault) {
-        value = false
-      } else if (
-        opt[BooleanFlags.shouldCastTrue] &&
-        (value === '' || value === hyphenate(key))
-      ) {
-        value = true
-      }
+    if (
+      opt[BooleanFlags.shouldCast] &&
+      opt[BooleanFlags.shouldCastTrue] &&
+      (value === '' || value === hyphenate(key))
+    ) {
+      value = true
     }
   }
   return value
