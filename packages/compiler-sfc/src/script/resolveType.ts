@@ -812,7 +812,7 @@ let loadTS: (() => typeof TS) | undefined
 /**
  * @private
  */
-export function registerTS(_loadTS: () => typeof TS) {
+export function registerTS(_loadTS: () => typeof TS): void {
   loadTS = () => {
     try {
       return _loadTS()
@@ -1092,7 +1092,7 @@ const fileToScopeCache = createCache<TypeScope>()
 /**
  * @private
  */
-export function invalidateTypeCache(filename: string) {
+export function invalidateTypeCache(filename: string): void {
   filename = normalizePath(filename)
   fileToScopeCache.delete(filename)
   tsConfigCache.delete(filename)
@@ -1424,7 +1424,7 @@ function attachNamespace(
   }
 }
 
-export function recordImports(body: Statement[]) {
+export function recordImports(body: Statement[]): Record<string, Import> {
   const imports: TypeScope['imports'] = Object.create(null)
   for (const s of body) {
     recordImport(s, imports)
@@ -1447,7 +1447,7 @@ function recordImport(node: Node, imports: TypeScope['imports']) {
 export function inferRuntimeType(
   ctx: TypeResolveContext,
   node: Node & MaybeWithScope,
-  scope = node._ownerScope || ctxToScope(ctx),
+  scope: TypeScope = node._ownerScope || ctxToScope(ctx),
   isKeyOf = false,
 ): string[] {
   try {

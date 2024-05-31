@@ -79,7 +79,7 @@ export const TeleportImpl = {
     slotScopeIds: string[] | null,
     optimized: boolean,
     internals: RendererInternals,
-  ) {
+  ): void {
     const {
       mc: mountChildren,
       pc: patchChildren,
@@ -253,7 +253,7 @@ export const TeleportImpl = {
     optimized: boolean,
     { um: unmount, o: { remove: hostRemove } }: RendererInternals,
     doRemove: boolean,
-  ) {
+  ): void {
     const { shapeFlag, children, anchor, targetAnchor, target, props } = vnode
 
     if (target) {
@@ -277,8 +277,8 @@ export const TeleportImpl = {
     }
   },
 
-  move: moveTeleport,
-  hydrate: hydrateTeleport,
+  move: moveTeleport as typeof moveTeleport,
+  hydrate: hydrateTeleport as typeof hydrateTeleport,
 }
 
 export enum TeleportMoveTypes {
@@ -293,7 +293,7 @@ function moveTeleport(
   parentAnchor: RendererNode | null,
   { o: { insert }, m: move }: RendererInternals,
   moveType: TeleportMoveTypes = TeleportMoveTypes.REORDER,
-) {
+): void {
   // move target anchor if this is a target change.
   if (moveType === TeleportMoveTypes.TARGET_CHANGE) {
     insert(vnode.targetAnchor!, container, parentAnchor)

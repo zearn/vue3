@@ -3,7 +3,7 @@ const range: number = 2
 export function generateCodeFrame(
   source: string,
   start = 0,
-  end = source.length,
+  end: number = source.length,
 ): string {
   // Split the content into individual lines but capture the newline sequence
   // that separated each line. This is important because the actual sequence is

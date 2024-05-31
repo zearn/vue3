@@ -39,6 +39,7 @@ import {
 } from '@vue/shared'
 import {
   type SchedulerJob,
+  type SchedulerJobs,
   flushPostFlushCbs,
   flushPreFlushCbs,
   invalidateJob,
@@ -273,7 +274,10 @@ export enum MoveType {
   REORDER,
 }
 
-export const queuePostRenderEffect = __FEATURE_SUSPENSE__
+export const queuePostRenderEffect: (
+  fn: SchedulerJobs,
+  suspense: SuspenseBoundary | null,
+) => void = __FEATURE_SUSPENSE__
   ? __TEST__
     ? // vitest can't seem to handle eager circular dependency
       (fn: Function | Function[], suspense: SuspenseBoundary | null) =>
@@ -299,7 +303,7 @@ export const queuePostRenderEffect = __FEATURE_SUSPENSE__
 export function createRenderer<
   HostNode = RendererNode,
   HostElement = RendererElement,
->(options: RendererOptions<HostNode, HostElement>) {
+>(options: RendererOptions<HostNode, HostElement>): Renderer<HostElement> {
   return baseCreateRenderer<HostNode, HostElement>(options)
 }
 
@@ -308,7 +312,7 @@ export function createRenderer<
 // tree-shakable.
 export function createHydrationRenderer(
   options: RendererOptions<Node, Element>,
-) {
+): HydrationRenderer {
   return baseCreateRenderer(options, createHydrationFunctions)
 }
 
@@ -2431,7 +2435,7 @@ function toggleRecurse(
 export function needTransition(
   parentSuspense: SuspenseBoundary | null,
   transition: TransitionHooks | null,
-) {
+): boolean | null {
   return (
     (!parentSuspense || (parentSuspense && !parentSuspense.pendingBranch)) &&
     transition &&
@@ -2450,7 +2454,11 @@ export function needTransition(
  * the children will always be moved. Therefore, in order to ensure correct move
  * position, el should be inherited from previous nodes.
  */
-export function traverseStaticChildren(n1: VNode, n2: VNode, shallow = false) {
+export function traverseStaticChildren(
+  n1: VNode,
+  n2: VNode,
+  shallow = false,
+): void {
   const ch1 = n1.children
   const ch2 = n2.children
   if (isArray(ch1) && isArray(ch2)) {

@@ -75,7 +75,17 @@ const isComment = (node: Node): node is Comment =>
 // passed in via arguments.
 export function createHydrationFunctions(
   rendererInternals: RendererInternals<Node, Element>,
-) {
+): [
+  RootHydrateFunction,
+  (
+    node: Node,
+    vnode: VNode,
+    parentComponent: ComponentInternalInstance | null,
+    parentSuspense: SuspenseBoundary | null,
+    slotScopeIds: string[] | null,
+    optimized?: boolean,
+  ) => Node | null,
+] {
   const {
     mt: mountComponent,
     p: patch,
@@ -714,7 +724,7 @@ export function createHydrationFunctions(
     )
   }
 
-  return [hydrate, hydrateNode] as const
+  return [hydrate, hydrateNode]
 }
 
 /**

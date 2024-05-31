@@ -202,7 +202,7 @@ export class VueElement extends BaseClass {
     }
   }
 
-  connectedCallback() {
+  connectedCallback(): void {
     this._connected = true
     if (!this._instance) {
       if (this._resolved) {
@@ -213,7 +213,7 @@ export class VueElement extends BaseClass {
     }
   }
 
-  disconnectedCallback() {
+  disconnectedCallback(): void {
     this._connected = false
     nextTick(() => {
       if (!this._connected) {
@@ -312,7 +312,7 @@ export class VueElement extends BaseClass {
     }
   }
 
-  protected _setAttr(key: string) {
+  protected _setAttr(key: string): void {
     let value = this.hasAttribute(key) ? this.getAttribute(key) : undefined
     const camelKey = camelize(key)
     if (this._numberProps && this._numberProps[camelKey]) {
@@ -324,7 +324,7 @@ export class VueElement extends BaseClass {
   /**
    * @internal
    */
-  protected _getProp(key: string) {
+  protected _getProp(key: string): any {
     return this._props[key]
   }
 
@@ -336,7 +336,7 @@ export class VueElement extends BaseClass {
     val: any,
     shouldReflect = true,
     shouldUpdate = true,
-  ) {
+  ): void {
     if (val !== this._props[key]) {
       this._props[key] = val
       if (shouldUpdate && this._instance) {
